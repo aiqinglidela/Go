@@ -1,0 +1,268 @@
+     <!DOCTYPE HTML>
+<html>
+<head>
+<title>天秤</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+ <!-- Bootstrap Core CSS -->
+<link href="/static2/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<!-- Custom CSS -->
+<link href="/static2/css/style.css" rel='stylesheet' type='text/css' />
+<!-- Graph CSS -->
+<link href="/static2/css/font-awesome.css" rel="stylesheet">
+<!-- jQuery -->
+<link href='https://fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
+<!-- lined-icons -->
+<link rel="stylesheet" href="/static2/css/icon-font.min.css" type='text/css' />
+<!-- //lined-icons -->
+<script src="/static2/js/jquery-1.10.2.min.js"></script>
+<script src="/static2/js/amcharts.js"></script>
+<script src="/static2/js/serial.js"></script>
+<script src="/static2/js/light.js"></script>
+<script src="/static2/js/radar.js"></script>
+<link href="/static2/css/barChart.css" rel='stylesheet' type='text/css' />
+<link href="/static2/css/fabochart.css" rel='stylesheet' type='text/css' />
+<!--clock init-->
+<script src="/static2/js/css3clock.js"></script>
+<!--Easy Pie Chart-->
+<!--skycons-icons-->
+<script src="/static2/js/skycons.js"></script>
+
+<script src="/static2/js/jquery.easydropdown.js"></script>
+
+<!--//skycons-icons-->
+</head> 
+<body>
+   <div class="page-container">
+   <!--/content-inner-->
+	<div class="left-content">
+	   <div class="inner-content">
+		<!-- header-starts -->
+			<div class="header-section">
+						<!--menu-right-->
+						<div class="top_menu">
+						        <div class="main-search">
+											<form>
+											   <input type="text" value="Search" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search';}" class="text"/>
+												<input type="submit" value="">
+											</form>
+									<div class="close"><img src="/static2/images/cross.png" /></div>
+								</div>
+									<div class="srch"><button></button></div>
+									<script type="text/javascript">
+										 $('.main-search').hide();
+										$('button').click(function (){
+											$('.main-search').show();
+											$('.main-search text').focus();
+										}
+										);
+										$('.close').click(function(){
+											$('.main-search').hide();
+										});
+									</script>
+							<!--/profile_details-->
+							<div class="profile_details_left">
+								<ul class="nofitications-dropdown">
+									<li class="dropdown note dra-down">
+										<script type="text/javascript">
+											function DropDown(el) {
+												this.dd = el;
+												this.placeholder = this.dd.children('span');
+												this.opts = this.dd.find('ul.dropdown > li');
+												this.val = '';
+												this.index = -1;
+												this.initEvents();
+											}
+											DropDown.prototype = {
+												initEvents : function() {
+													var obj = this;
+
+													obj.dd.on('click', function(event){
+														$(this).toggleClass('active');
+														return false;
+													});
+
+													obj.opts.on('click',function(){
+														var opt = $(this);
+														obj.val = opt.text();
+														obj.index = opt.index();
+														obj.placeholder.text(obj.val);
+													});
+												},
+												getValue : function() {
+													return this.val;
+												},
+												getIndex : function() {
+													return this.index;
+												}
+											}
+
+											// $(function() {
+											//
+											// 	var dd = new DropDown( $('#dd') );
+											//
+											// 	$(document).click(function() {
+											// 		// all dropdowns
+											// 		$('.wrapper-dropdown-3').removeClass('active');
+											// 	});
+											//
+											// });
+										</script>
+									</li>
+									<li class="dropdown note">
+										<a href="#" onclick="ws()" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope-o"></i> <span class="badge"></span></a>
+									</li>
+
+
+
+									<div class="clearfix"></div>
+								</ul>
+							</div>
+							<div class="clearfix"></div>	
+							<!--//profile_details-->
+						</div>
+						<!--//menu-right-->
+					<div class="clearfix"></div>
+				</div>
+					<!-- //header-ends -->
+						<div class="outter-wp">
+													<h3 class="inner-tittle two">通知公告</h3>
+													<div class="graph">
+																													
+																        <div class="tabs">
+																	  <nav class="second"> <a>{{ .gg0.Title}}</a> <a>{{ .gg1.Title}}</a> <a>{{ .gg2.Title}}</a> <a>{{ .gg3.Title}}</a><a>{{ .gg4.Title}}</a></nav>
+																	  <div class="context">
+																		<p>{{ .gg0.Text}}</p>
+																		</div>
+																	  <div class="context">
+																		  <p>{{ .gg1.Text}}</p>
+																	  </div>
+																	  <div class="context">
+																		  <p>{{ .gg2.Text}}</p>
+																	  </div>
+																	  <div class="context">
+																		  <p>{{ .gg3.Text}}</p>
+																		</div>
+																	  <div class="context">
+																		  <p>{{ .gg4.Text}}</p>
+																		</div>
+																	</div>
+																	<script>
+																	$(function() {
+																	  $('.tabs nav a').on('click', function() {
+																		show_content($(this).index());
+																	  });
+																	  
+																	  show_content(0);
+													
+																	  function show_content(index) {
+																		// Make the content visible
+																		$('.tabs .context.visible').removeClass('visible');
+																		$('.tabs .context:nth-of-type(' + (index + 1) + ')').addClass('visible');
+													
+																		// Set the tab to selected
+																		$('.tabs nav.second a.selected').removeClass('selected');
+																		$('.tabs navnav.second a:nth-of-type(' + (index + 1) + ')').addClass('selected');
+																	  }
+																	});
+																	</script>
+															
+													</div>
+									</div>
+								</div>
+							</div>
+				<!--//content-inner-->
+			<!--/sidebar-menu-->
+				<div class="sidebar-menu">
+					<header class="logo">
+					<a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="http://127.0.0.1:8082/index?Authorization={{ .token}}"> <span id="logo"> <h1>菜单</h1></span>
+					<!--<img id="logo" src="" alt="Logo"/>--> 
+				  </a>
+				</header>
+			<div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
+			<!--/down-->
+					<div class="down">
+						<a href="http://127.0.0.1:8082/grzx?Authorization={{ .token}}"><img src="/static2/images/admin.jpg"></a>
+						<a href="#"><span class=" name-caret">{{ .data.username }}</span></a>
+						<ul>
+							<li><a class="tooltips" href="http://127.0.0.1:8082/grzx?Authorization={{ .token}}"><span>个人中心</span><i class="lnr lnr-user"></i></a></li>
+							<li><a class="tooltips" href="http://127.0.0.1:8081/dengchu?Authorization={{ .token}}"><span>登出</span><i class="lnr lnr-power-switch"></i></a></li>
+						</ul>
+					</div>
+					<!--//down-->
+					<div class="menu">
+						<ul id="menu" >
+							<li><a href="http://127.0.0.1:8082/index?Authorization={{ .token}}"><i class="fa fa-tachometer"></i> <span>首页</span></a></li>
+							<li id="menu-academico" ><a href="#"><i class="fa fa-table"></i> <span>发布考试</span> <span class="fa fa-angle-right" style="float: right"></span></a>
+								<ul id="menu-academico-sub" >
+									<li id="menu-academico-avaliacoes" ><a href="http://127.0.0.1:8082/fabuks?Authorization={{ .token}}">企业员工</a></li>
+									<li id="menu-academico-boletim" ><a href="http://127.0.0.1:8082/fabuks2?Authorization={{ .token}}">部分用户</a></li>
+								</ul>
+							</li>
+							<li id="menu-academico" ><a href="http://127.0.0.1:8082/ks?Authorization={{ .token}}"><i class="fa fa-file-text-o"></i> <span>进行考试</span></a></li>
+							<li id="menu-academico" ><a href="http://127.0.0.1:8082/ksgl?Authorization={{ .token}}"><i class="fa fa-file-text-o"></i> <span>考试管理</span></a></li>
+							<li><a href="http://127.0.0.1:8082/kcsz?Authorization={{ .token}}"><i class="lnr lnr-pencil"></i> <span>考场设置</span></a></li>
+							<li><a href="#"><i class="lnr lnr-highlight"></i>试卷管理<span class="fa fa-angle-right" style="float: right"></span></a>
+								<ul>
+									<li><a href="http://127.0.0.1:8082/glsj?Authorization={{ .token}}"><i class="fa fa-inbox"></i>　管理试卷</a></li>
+									<li><a href="http://127.0.0.1:8082/drsj?Authorization={{ .token}}"><i class="fa fa-pencil-square-o"></i>　导入试卷</a></li>
+								</ul>
+							</li>
+							<li id="menu-academico" ><a href="http://127.0.0.1:8082/ksbb?Authorization={{ .token}}"><i class="lnr lnr-layers"></i> <span>考试报表</span></a>
+							</li>
+							<li><a href="http://127.0.0.1:8082/qyyhgl?Authorization={{ .token}}"><i class="lnr lnr-pencil"></i> <span>企业用户管理</span> </a></li>
+							<li><a href="http://127.0.0.1:8082/gg?Authorization={{ .token}}"><i class="lnr lnr-map"></i> <span>通知公告</span> </a></li>
+							</li>
+						</ul>
+					</div>
+							  </div>
+							  <div class="clearfix"></div>		
+							</div>
+							<script>
+							var toggle = true;
+										
+							$(".sidebar-icon").click(function() {                
+							  if (toggle)
+							  {
+								$(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+								$("#menu span").css({"position":"absolute"});
+							  }
+							  else
+							  {
+								$(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+								setTimeout(function() {
+								  $("#menu span").css({"position":"relative"});
+								}, 400);
+							  }
+											
+											toggle = !toggle;
+										});
+							</script>
+<!--js -->
+<link rel="stylesheet" href="/static2/css/vroom.css">
+<script type="text/javascript" src="/static2/js/vroom.js"></script>
+<script type="text/javascript" src="/static2/js/TweenLite.min.js"></script>
+<script type="text/javascript" src="/static2/js/CSSPlugin.min.js"></script>
+<script src="/static2/js/jquery.nicescroll.js"></script>
+<script src="/static2/js/scripts.js"></script>
+<script>
+    document.getElementById("check").onclick = function(){
+        var checked = document.getElementById("check").checked;
+        var checkson = document.getElementsByName("vehicle");
+        if(checked){
+            for(var i = 0; i < checkson.length ;i++){
+                checkson[i].checked = true;
+            }
+        }else{
+            for(var i = 0; i < checkson.length ;i++){
+                checkson[i].checked = false;
+            }
+        }
+    }
+</script>
+<!-- Bootstrap Core JavaScript -->
+   <script src="/static2/js/bootstrap.min.js"></script>
+</body>
+</html>

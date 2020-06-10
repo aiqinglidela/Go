@@ -1,0 +1,428 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title></title>
+
+<link href="/static2/css/main.css" rel="stylesheet" type="text/css" />
+<link href="/static2/css/iconfont.css" rel="stylesheet" type="text/css" />
+<link href="/static2/css/test.css" rel="stylesheet" type="text/css" />
+<style>
+.hasBeenAnswer {
+	background: #5d9cec;
+	color:#fff;
+}
+</style>
+<script>
+	var i=1;
+	var ksxq={{.ksxq}};
+	var j={{.kc.Qiehuanmax}};
+	var k={{.kc.Fangzuobi}};
+	var ti ={{.t2}}*60*1000;
+	if (ksxq==1){
+		$("#jj").attr('disabled',true);
+	}else{
+		var time = window.setInterval(function(){
+			$("#jj").click();
+		},ti);
+		document.addEventListener('visibilitychange',function(){ //浏览器切换事件
+			if(document.visibilityState=='hidden') { //离开当前tab标签
+			}else {/////回到当前tab标签
+				if (k==1){
+					$("#zuobinum").val(i);
+					alert("已经离开"+i+"次，"+"超过"+j+"次将自动交卷");
+					i++;
+				}
+				if (i==5){
+					jiaoj('{{.token}}','{{.examid}}')
+				}
+			}
+		});
+	}
+</script>
+</head>
+<body>
+<div class="main">
+	<!--nr start-->
+	<div class="test_main">
+		<div class="nr_left">
+			<div class="test">
+				<form enctype="multipart/form-data" id="jioajuan">
+					<input type="text" hidden="hidden" name="zuobinum" id="zuobinum" value="0">
+					<input type="text" hidden="hidden" name="ksid" id="ksid" value="{{.ksid}}">
+					<div class="test_title">
+						<p class="test_time">
+							<i class="icon iconfont">&#xe6fb;</i><b id="tm2" class="alt-1">{{.t1}}:{{.t2}}</b>
+						</p>
+						<font><input type="button" id="jj" onclick="jiaoj('{{.token}}','{{.examid}}')" name="test_jiaojuan" value="交卷"></font>
+					</div>
+					{{if gt .n1 0}}
+						<div class="test_content">
+
+							<div class="test_content_title">
+
+								<h2>单选题</h2>
+								<p>
+									<span>共</span><i class="content_lit">{{.n1}}</i><span>题，</span><span>合计</span><i class="content_fs">{{.g1}}</i><span>分</span>
+								</p>
+							</div>
+						</div>
+					<div class="test_content_nr">
+						<ul>
+									{{range $i, $v := .danxuan}}
+										<li id="{{$v.Id}}">
+											<div class="test_content_nr_tt">
+												<i>{{$i}}</i><span></span><font>{{ $v.Title }}(  )</font><b class="icon iconfont">&#xe881;</b>
+											</div>
+											<div class="test_content_nr_main">
+												<ul>
+													<li class="option">
+														<input type="radio" class="radioOrCheck"  name="{{$v.Id}}"
+															   id="{{$v.Id}}_1" value="A"
+														/>
+
+
+														<label for="{{$v.Id}}_1">
+															A.
+															<p class="ue" style="display: inline;">{{ $v.Optiona}}</p>
+														</label>
+													</li>
+
+													<li class="option">
+
+														<input type="radio" class="radioOrCheck" name="{{$v.Id}}"
+															   id="{{$v.Id}}_2" value="B"
+														/>
+
+
+														<label for="{{$v.Id}}_2">
+															B.
+															<p class="ue" style="display: inline;">{{ $v.Optionb}}</p>
+														</label>
+													</li>
+
+													<li class="option">
+
+														<input type="radio" class="radioOrCheck" name="{{$v.Id}}"
+															   id="{{$v.Id}}_3" value="C"
+														/>
+
+
+														<label for="{{$v.Id}}_3">
+															C.
+															<p class="ue" style="display: inline;">{{ $v.Optionc}}</p>
+														</label>
+													</li>
+
+													<li class="option">
+
+														<input type="radio" class="radioOrCheck" name="{{$v.Id}}"
+															   id="{{$v.Id}}_4" value="D"
+														/>
+
+
+														<label for="{{$v.Id}}_4">
+															D.
+															<p class="ue" style="display: inline;">{{ $v.Optiond}}</p>
+														</label>
+													</li>
+
+												</ul>
+											</div>
+										</li>
+									{{end}}
+									</ul>
+								</div>
+							{{end}}
+					{{if gt .n2 0}}
+					<div class="test_content">
+						<div class="test_content_title">
+							<h2>多选题</h2>
+							<p>
+								<span>共</span><i class="content_lit">{{.n2}}</i><span>题，</span><span>合计</span><i class="content_fs">{{.g2}}</i><span>分</span>
+							</p>
+						</div>
+					</div>
+					<div class="test_content_nr">
+						<ul>
+							{{range $i, $v := .duoxuan}}
+								<li id="{{$v.Id}}">
+									<div class="test_content_nr_tt">
+										<i>{{$i}}</i><span></span><font>{{$v.Title}}()</font><b class="icon iconfont">&#xe881;</b>
+									</div>
+
+									<div class="test_content_nr_main">
+										<ul>
+
+											<li class="option">
+
+
+												<input type="checkbox" class="radioOrCheck" name="{{$v.Id}}"
+													   id="{{$v.Id}}_1" value="A"
+												/>
+
+												<label for="{{$v.Id}}_1">
+													A.
+													<p class="ue" style="display: inline;">{{$v.Optiona}}</p>
+												</label>
+											</li>
+
+											<li class="option">
+
+
+												<input type="checkbox" class="radioOrCheck" name="{{$v.Id}}"
+													   id="{{$v.Id}}_2" value="B"
+												/>
+
+												<label for="{{$v.Id}}_2">
+													B.
+													<p class="ue" style="display: inline;">{{$v.Optionb}}</p>
+												</label>
+											</li>
+
+											<li class="option">
+
+
+												<input type="checkbox" class="radioOrCheck" name="{{$v.Id}}"
+													   id="{{$v.Id}}_3" value="C"
+												/>
+
+												<label for="{{$v.Id}}_3">
+													C.
+													<p class="ue" style="display: inline;">{{$v.Optionc}}</p>
+												</label>
+											</li>
+
+											<li class="option">
+
+
+												<input type="checkbox" class="radioOrCheck" name="{{$v.Id}}"
+													   id="{{$v.Id}}_4" value="D"
+												/>
+
+												<label for="{{$v.Id}}_4">
+													D.
+													<p class="ue" style="display: inline;">{{$v.Optiond}}</p>
+												</label>
+											</li>
+
+										</ul>
+									</div>
+								</li>
+							{{end}}
+								</ul>
+							</div>
+					{{end}}
+					{{if gt .n3 0}}
+						<div class="test_content">
+							<div class="test_content_title">
+								<h2>判断题</h2>
+								<p>
+									<span>共</span><i class="content_lit">{{.n3}}</i><span>题，</span><span>合计</span><i class="content_fs">{{.g3}}</i><span>分</span>
+								</p>
+							</div>
+						</div>
+						<div class="test_content_nr">
+							<ul>
+								{{range $i, $v := .panduan}}
+									<li id="{{$v.Id}}">
+										<div class="test_content_nr_tt">
+											<i>{{$i}}</i><span></span><font>{{$v.Title}}()</font><b class="icon iconfont">&#xe881;</b>
+										</div>
+
+										<div class="test_content_nr_main">
+											<ul>
+
+												<li class="option">
+
+
+													<input type="radio" class="radioOrCheck" name="{{$v.Id}}"
+														   id="{{$v.Id}}_1" value="A"
+													/>
+
+													<label for="{{$v.Id}}_1">
+														A.
+														<p class="ue" style="display: inline;">对</p>
+													</label>
+												</li>
+												<li class="option">
+													<input type="radio" class="radioOrCheck" name="{{$v.Id}}"
+														   id="{{$v.Id}}_2" value="B"
+													/>
+
+													<label for="{{$v.Id}}_2">
+														B.
+														<p class="ue" style="display: inline;">错</p>
+													</label>
+												</li>
+											</ul>
+										</div>
+									</li>
+								{{end}}
+							</ul>
+						</div>
+					{{end}}
+					{{if gt .n4 0}}
+						<div class="test_content">
+							<div class="test_content_title">
+								<h2>简答题</h2>
+								<p>
+									<span>共</span><i class="content_lit">{{.n4}}</i><span>题，</span><span>合计</span><i class="content_fs">{{.g4}}</i><span>分</span>
+								</p>
+							</div>
+						</div>
+						<div class="test_content_nr">
+							<ul>
+								{{range $i, $v := .jianda}}
+									<li id="{{$v.Id}}">
+										<div class="test_content_nr_tt">
+											<i>{{$i}}</i><span></span><font>{{$v.Title}}()</font><b class="icon iconfont">&#xe881;</b>
+										</div>
+										<div class="test_content_nr_main">
+											<ul>
+												<li class="option" style="width:500px; height:100px;">
+													<label for="{{$v.Id}}">
+														{{if eq $.kc.Fz 1}}
+														<input type="text" style="width:500px; height:100px;" name="{{$v.Id}}">
+														{{else}}
+														<input type="text" style="width:500px; height:100px;" name="{{$v.Id}}" oncontextmenu="return false" onpaste="return false" oncopy="return false">
+														{{end}}
+													</label>
+												</li>
+											</ul>
+										</div>
+										<br>
+									</li>
+								{{end}}
+							</ul>
+						</div>
+					{{end}}
+				</form>
+			</div>
+
+		</div>
+		<div class="nr_right">
+			<div class="nr_rt_main">
+				<div class="rt_nr1">
+					<div class="rt_nr1_title">
+						<h1>
+							<i class="icon iconfont">&#xe692;</i>答题卡
+						</h1>
+						<p class="test_time">
+							<i class="icon iconfont">&#xe6fb;</i><b class="alt-1">{{.t1}}:{{.t2}}</b>
+						</p>
+					</div>
+					{{if gt .n1 0}}
+						<div class="rt_content">
+							<div class="rt_content_tt">
+								<h2>单选题</h2>
+								<p>
+									<span>共</span><i class="content_lit">{{.n1}}</i><span>题</span>
+								</p>
+							</div>
+							<div class="rt_content_nr answerSheet">
+								<ul>
+									{{range $i, $v := .danxuan}}
+										<li><a href="#{{$v.Id}}">{{$i}}</a></li>
+									{{end}}
+								</ul>
+							</div>
+						</div>
+					{{end}}
+					{{if gt .n2 0}}
+						<div class="rt_content">
+							<div class="rt_content_tt">
+								<h2>多选题</h2>
+								<p>
+									<span>共</span><i class="content_lit">{{.n2}}</i><span>题</span>
+								</p>
+							</div>
+							<div class="rt_content_nr answerSheet">
+								<ul>
+									{{range $i, $v := .duoxuan}}
+										<li><a href="#{{$v.Id}}">{{$i}}</a></li>
+									{{end}}
+								</ul>
+							</div>
+						</div>
+					{{end}}
+					{{if gt .n3 0}}
+						<div class="rt_content">
+							<div class="rt_content_tt">
+								<h2>判断题</h2>
+								<p>
+									<span>共</span><i class="content_lit">{{.n3}}</i><span>题</span>
+								</p>
+							</div>
+							<div class="rt_content_nr answerSheet">
+								<ul>
+									{{range $i, $v := .panduan}}
+										<li><a href="#{{$v.Id}}">{{$i}}</a></li>
+									{{end}}
+								</ul>
+							</div>
+						</div>
+					{{end}}
+					{{if gt .n4 0}}
+						<div class="rt_content">
+							<div class="rt_content_tt">
+								<h2>简答题</h2>
+								<p>
+									<span>共</span><i class="content_lit">{{.n4}}</i><span>题</span>
+								</p>
+							</div>
+							<div class="rt_content_nr answerSheet">
+								<ul>
+									{{range $i, $v := .jianda}}
+										<li><a href="#{{$v.Id}}">{{$i}}</a></li>
+									{{end}}
+								</ul>
+							</div>
+						</div>
+					{{end}}
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!--nr end-->
+	<div class="foot"></div>
+</div>
+<script src="/static2/js/myjs.js"></script>
+<script src="/static2/js/jquery-1.11.3.min.js"></script>
+<script src="/static2/js/jquery.easy-pie-chart.js"></script>
+<!--时间js-->
+<script src="/static2/js/jquery.countdown.js"></script>
+<script>
+	window.jQuery(function($) {
+		"use strict";
+		
+		$('time').countDown({
+			with_separators : false
+		});
+		$('.alt-1').countDown({
+			css_class : 'countdown-alt-1'
+		});
+		$('.alt-2').countDown({
+			css_class : 'countdown-alt-2'
+		});
+		
+	});
+	
+	
+	$(function() {
+		$('li.option label').click(function() {
+		debugger;
+			var examId = $(this).closest('.test_content_nr_main').closest('li').attr('id'); // 得到题目ID
+			var cardLi = $('a[href=#' + examId + ']'); // 根据题目ID找到对应答题卡
+			// 设置已答题
+			if(!cardLi.hasClass('hasBeenAnswer')){
+				cardLi.addClass('hasBeenAnswer');
+			}
+			
+		});
+	});
+</script>
+</body>
+</html>

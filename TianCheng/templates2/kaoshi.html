@@ -1,0 +1,358 @@
+     <!DOCTYPE HTML>
+<html>
+<head>
+<title>天秤</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<script src="/static2/js/myjs.js"></script>
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+ <!-- Bootstrap Core CSS -->
+<link href="/static2/css/bootstrap.min.css" rel='stylesheet' type='text/css' />
+<!-- Custom CSS -->
+<link href="/static2/css/style.css" rel='stylesheet' type='text/css' />
+<!-- Graph CSS -->
+<link href="/static2/css/font-awesome.css" rel="stylesheet">
+<!-- jQuery -->
+<link href='https://fonts.googleapis.com/css?family=Roboto:700,500,300,100italic,100,400' rel='stylesheet' type='text/css'>
+<!-- lined-icons -->
+<link rel="stylesheet" href="/static2/css/icon-font.min.css" type='text/css' />
+<!-- //lined-icons -->
+<script src="/static2/js/jquery-1.10.2.min.js"></script>
+<script src="/static2/js/amcharts.js"></script>
+<script src="/static2/js/serial.js"></script>
+<script src="/static2/js/light.js"></script>
+<script src="/static2/js/radar.js"></script>
+<link href="/static2/css/barChart.css" rel='stylesheet' type='text/css' />
+<link href="/static2/css/fabochart.css" rel='stylesheet' type='text/css' />
+<!--clock init-->
+<script src="/static2/js/css3clock.js"></script>
+<!--Easy Pie Chart-->
+<!--skycons-icons-->
+<script src="/static2/js/skycons.js"></script>
+
+<script src="/static2/js/jquery.easydropdown.js"></script>
+	<script type="text/javascript">
+		var pageSize = 5;    //每页显示的记录条数
+		var curPage=0;        //当前页
+		var lastPage;        //最后页
+		var direct=0;        //方向
+		var len;            //总行数
+		var page;            //总页数
+		var begin;
+		var end;
+		$(document).ready(function display(){
+			len =$("#mytable tr").length - 1;    // 求这个表的总行数，剔除第一行介绍
+			page=len % pageSize==0 ? len/pageSize : Math.floor(len/pageSize)+1;//根据记录条数，计算页数
+			curPage=1;    // 设置当前为第一页
+			displayPage(1);//显示第一页
+			document.getElementById("btn0").innerHTML="当前 " + curPage + "/" + page + " 页     ";    // 显示当前多少页
+			document.getElementById("sjzl").innerHTML="数据总量 " + len + "";        // 显示数据量
+
+			$("#btn1").click(function firstPage(){    // 首页
+				curPage=1;
+				direct = 0;
+				displayPage();
+			});
+			$("#btn2").click(function frontPage(){    // 上一页
+				direct=-1;
+				displayPage();
+			});
+			$("#btn3").click(function nextPage(){    // 下一页
+				direct=1;
+				displayPage();
+			});
+			$("#btn4").click(function lastPage(){    // 尾页
+				curPage=page;
+				direct = 0;
+				displayPage();
+			});
+			$("#btn5").click(function changePage(){    // 转页
+				curPage=document.getElementById("changePage").value * 1;
+				if (!/^[1-9]\d*$/.test(curPage)) {
+					alert("请输入正整数");
+					return ;
+				}
+				if (curPage > page) {
+					alert("超出数据页面");
+					return ;
+				}
+				direct = 0;
+				displayPage();
+			});
+
+
+			$("#pageSizeSet").click(function setPageSize(){    // 设置每页显示多少条记录
+				pageSize = document.getElementById("pageSize").value;    //每页显示的记录条数
+				if (!/^[1-9]\d*$/.test(pageSize)) {
+					alert("请输入正整数");
+					return ;
+				}
+				len =$("#mytable tr").length - 1;
+				page=len % pageSize==0 ? len/pageSize : Math.floor(len/pageSize)+1;//根据记录条数，计算页数
+				curPage=1;        //当前页
+				direct=0;        //方向
+				firstPage();
+			});
+		});
+
+		function displayPage(){
+			if(curPage <=1 && direct==-1){
+				direct=0;
+				alert("已经是第一页了");
+				return;
+			} else if (curPage >= page && direct==1) {
+				direct=0;
+				alert("已经是最后一页了");
+				return ;
+			}
+
+			lastPage = curPage;
+
+			// 修复当len=1时，curPage计算得0的bug
+			if (len > pageSize) {
+				curPage = ((curPage + direct + len) % len);
+			} else {
+				curPage = 1;
+			}
+
+
+			document.getElementById("btn0").innerHTML="当前 " + curPage + "/" + page + " 页  ";        // 显示当前多少页
+
+			begin=(curPage-1)*pageSize + 1;// 起始记录号
+			end = begin + 1*pageSize - 1;    // 末尾记录号
+
+
+			if(end > len ) end=len;
+			$("#mytable tr").hide();    // 首先，设置这行为隐藏
+			$("#mytable tr").each(function(i){    // 然后，通过条件判断决定本行是否恢复显示
+				if((i>=begin && i<=end) || i==0 )//显示begin<=x<=end的记录
+					$(this).show();
+			});
+
+		}
+	</script>
+<!--//skycons-icons-->
+</head> 
+<body>
+   <div class="page-container">
+   <!--/content-inner-->
+	<div class="left-content">
+	   <div class="inner-content">
+		<!-- header-starts -->
+			<div class="header-section">
+						<!--menu-right-->
+						<div class="top_menu">
+						        <div class="main-search">
+											<form>
+											   <input type="text" value="Search" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search';}" class="text"/>
+												<input type="submit" value="">
+											</form>
+									<div class="close"><img src="/static2/images/cross.png" /></div>
+								</div>
+									<div class="srch"><button></button></div>
+									<script type="text/javascript">
+										 $('.main-search').hide();
+										$('button').click(function (){
+											$('.main-search').show();
+											$('.main-search text').focus();
+										}
+										);
+										$('.close').click(function(){
+											$('.main-search').hide();
+										});
+									</script>
+							<!--/profile_details-->
+							<div class="profile_details_left">
+								<ul class="nofitications-dropdown">
+									<li class="dropdown note dra-down">
+										<script type="text/javascript">
+											function DropDown(el) {
+												this.dd = el;
+												this.placeholder = this.dd.children('span');
+												this.opts = this.dd.find('ul.dropdown > li');
+												this.val = '';
+												this.index = -1;
+												this.initEvents();
+											}
+											DropDown.prototype = {
+												initEvents : function() {
+													var obj = this;
+
+													obj.dd.on('click', function(event){
+														$(this).toggleClass('active');
+														return false;
+													});
+
+													obj.opts.on('click',function(){
+														var opt = $(this);
+														obj.val = opt.text();
+														obj.index = opt.index();
+														obj.placeholder.text(obj.val);
+													});
+												},
+												getValue : function() {
+													return this.val;
+												},
+												getIndex : function() {
+													return this.index;
+												}
+											}
+
+											// $(function() {
+											//
+											// 	var dd = new DropDown( $('#dd') );
+											//
+											// 	$(document).click(function() {
+											// 		// all dropdowns
+											// 		$('.wrapper-dropdown-3').removeClass('active');
+											// 	});
+											//
+											// });
+										</script>
+									</li>
+									<li class="dropdown note">
+										<a href="#" onclick="ws()" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope-o"></i> <span class="badge"></span></a>
+									</li>
+
+
+
+									<div class="clearfix"></div>
+								</ul>
+							</div>
+							<div class="clearfix"></div>	
+							<!--//profile_details-->
+						</div>
+						<!--//menu-right-->
+					<div class="clearfix"></div>
+				</div>
+					<!-- //header-ends -->
+						<div class="outter-wp">
+													<h3 class="inner-tittle two">正在进行中的考试</h3>
+														  <div class="graph">
+															<div id="mytable" class="tables">
+																<table class="table"> 
+																<thead> <tr> <th>序号</th> <th>考试名称</th> <th>时间</th> <th></th> </tr> </thead>
+																<tbody>
+																{{range $i, $v := .test}}
+																	<tr class="active"> <th scope="row">{{$i}}</th> <td><h3 id="h3.-bootstrap-heading">{{$v.Kaoshiname}}<a class="anchorjs-link" href="#h3.-bootstrap-heading"><span class="anchorjs-icon"></span></a></h3></td> <td><h3 id="h3.-bootstrap-heading">{{$v.Starttime}}----{{$v.Endtime}}<a class="anchorjs-link" href="#h3.-bootstrap-heading"><span class="anchorjs-icon"></span></a></h3></td> <td><a data-toggle="modal" data-target="#myModal" onclick="ksby('{{$v.Id}}','{{ $.token}}')" class="btn blue">开始你的表演</a></td> </tr>
+																{{end}}
+																</tbody>
+																</table> 
+															</div>
+															  <a id="btn0"></a>
+															  <a hidden="hidden" id="sjzl"></a>&nbsp;
+															  <a  class="btn btn-lg btn-default"　href="#" id="btn1">首页</a>
+															  <a  class="btn btn-lg btn-default" href="#" id="btn2">上一页</a>
+															  <a  class="btn btn-lg btn-default" href="#" id="btn3">下一页</a>
+															  <a  class="btn btn-lg btn-default" href="#" id="btn4">尾页</a>&nbsp;
+															  <a>转到&nbsp;</a>
+															  <input id="changePage" type="text" size="1" maxlength="4"/>
+															  <a>页&nbsp;</a>
+															  <a class="btn btn-lg btn-default" href="#" id="btn5">跳转</a>
+														  </div>	
+									</div>
+		   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			   <div class="modal-dialog">
+				   <div class="modal-content">
+					   <div class="modal-header">
+						   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							   &times;
+						   </button>
+						   <h4 class="modal-title" id="myModalLabel">
+							   考试令牌
+						   </h4>
+					   </div>
+					   <div class="modal-body">
+						   <input type="text" id="t1" value="" hidden="hidden">
+						   <input type="text" id="t2" value="" hidden="hidden">
+						   令牌: 　<input type="text" id="t3">
+					   </div>
+					   <div class="modal-footer">
+						   <button type="button" class="btn btn-default" onclick="ksks()" data-dismiss="modal">确定
+						   </button>
+					   </div>
+				   </div><!-- /.modal-content -->
+			   </div><!-- /.modal -->
+		   </div>
+								</div>
+							</div>
+				<!--//content-inner-->
+			<!--/sidebar-menu-->
+				<div class="sidebar-menu">
+					<header class="logo">
+					<a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a> <a href="http://127.0.0.1:8082/index?Authorization={{ .token}}"> <span id="logo"> <h1>菜单</h1></span>
+					<!--<img id="logo" src="" alt="Logo"/>--> 
+				  </a>
+				</header>
+			<div style="border-top:1px solid rgba(69, 74, 84, 0.7)"></div>
+			<!--/down-->
+					<div class="down">
+						<a href="http://127.0.0.1:8082/grzx?Authorization={{ .token}}"><img src="/static2/images/admin.jpg"></a>
+						<a href="#"><span class=" name-caret">{{ .data.username }}</span></a>
+						<ul>
+							<li><a class="tooltips" href="http://127.0.0.1:8082/grzx?Authorization={{ .token}}"><span>个人中心</span><i class="lnr lnr-user"></i></a></li>
+							<li><a class="tooltips" href="http://127.0.0.1:8081/dengchu?Authorization={{ .token}}"><span>登出</span><i class="lnr lnr-power-switch"></i></a></li>
+						</ul>
+					</div>
+					<!--//down-->
+					<div class="menu">
+						<ul id="menu" >
+							<li><a href="http://127.0.0.1:8082/index?Authorization={{ .token}}"><i class="fa fa-tachometer"></i> <span>首页</span></a></li>
+							<li id="menu-academico" ><a href="#"><i class="fa fa-table"></i> <span>发布考试</span> <span class="fa fa-angle-right" style="float: right"></span></a>
+								<ul id="menu-academico-sub" >
+									<li id="menu-academico-avaliacoes" ><a href="http://127.0.0.1:8082/fabuks?Authorization={{ .token}}">企业员工</a></li>
+									<li id="menu-academico-boletim" ><a href="http://127.0.0.1:8082/fabuks2?Authorization={{ .token}}">部分用户</a></li>
+								</ul>
+							</li>
+							<li id="menu-academico" ><a href="http://127.0.0.1:8082/ks?Authorization={{ .token}}"><i class="fa fa-file-text-o"></i> <span>进行考试</span></a></li>
+							<li id="menu-academico" ><a href="http://127.0.0.1:8082/ksgl?Authorization={{ .token}}"><i class="fa fa-file-text-o"></i> <span>考试管理</span></a></li>
+							<li><a href="http://127.0.0.1:8082/kcsz?Authorization={{ .token}}"><i class="lnr lnr-pencil"></i> <span>考场设置</span></a></li>
+							<li><a href="#"><i class="lnr lnr-highlight"></i>试卷管理<span class="fa fa-angle-right" style="float: right"></span></a>
+								<ul>
+									<li><a href="http://127.0.0.1:8082/glsj?Authorization={{ .token}}"><i class="fa fa-inbox"></i>　管理试卷</a></li>
+									<li><a href="http://127.0.0.1:8082/drsj?Authorization={{ .token}}"><i class="fa fa-pencil-square-o"></i>　导入试卷</a></li>
+								</ul>
+							</li>
+							<li id="menu-academico" ><a href="http://127.0.0.1:8082/ksbb?Authorization={{ .token}}"><i class="lnr lnr-layers"></i> <span>考试报表</span></a>
+							</li>
+							<li><a href="http://127.0.0.1:8082/qyyhgl?Authorization={{ .token}}"><i class="lnr lnr-pencil"></i> <span>企业用户管理</span> </a></li>
+							<li><a href="http://127.0.0.1:8082/gg?Authorization={{ .token}}"><i class="lnr lnr-map"></i> <span>通知公告</span> </a></li>
+							</li>
+						</ul>
+					</div>
+							  </div>
+							  <div class="clearfix"></div>		
+							</div>
+							<script>
+							var toggle = true;
+										
+							$(".sidebar-icon").click(function() {                
+							  if (toggle)
+							  {
+								$(".page-container").addClass("sidebar-collapsed").removeClass("sidebar-collapsed-back");
+								$("#menu span").css({"position":"absolute"});
+							  }
+							  else
+							  {
+								$(".page-container").removeClass("sidebar-collapsed").addClass("sidebar-collapsed-back");
+								setTimeout(function() {
+								  $("#menu span").css({"position":"relative"});
+								}, 400);
+							  }
+											
+											toggle = !toggle;
+										});
+							</script>
+<!--js -->
+<link rel="stylesheet" href="/static2/css/vroom.css">
+<script type="text/javascript" src="/static2/js/vroom.js"></script>
+<script type="text/javascript" src="/static2/js/TweenLite.min.js"></script>
+<script type="text/javascript" src="/static2/js/CSSPlugin.min.js"></script>
+<script src="/static2/js/jquery.nicescroll.js"></script>
+<script src="/static2/js/scripts.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+   <script src="/static2/js/bootstrap.min.js"></script>
+</body>
+</html>
